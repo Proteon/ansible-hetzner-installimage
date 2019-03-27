@@ -1,2 +1,14 @@
 ---
-# tasks file for hetzner-installimage
+
+- name: get host ip address
+  local_action:
+    module: getent
+    database: hosts
+    key: "{{ inventory_hostname }}"
+
+- name: reboot into rescue mode
+  include: rescue.yml
+  when: 
+
+#- name: create installimage config
+

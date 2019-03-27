@@ -1,0 +1,27 @@
+IMAGE {{ hetzner_image }}
+BOOTLOADER {{ hetzner_bootloader }}
+HOSTNAME {{ hetzner_hostname }}
+{% if sshkey_url %}
+# SSH keys to put on the installed system
+SSHKEYS_URL {{ sshkey_url }}
+{% endif %}
+
+# Hard disk drives to wipe and use
+{% for device in ansible_devices if device.startswith("sd") or device.startswith("nvme") -%}
+  DRIVE{{ loop.index }} /dev/{{ device }}
+{% endfor %}
+
+# RAID configuration
+SWRAID {{ hetzner_swraid }}
+SWRAIDLEVEL {{ hetzner_swraid_level }}
+
+# Physical partitions
+{% for part in partitions -%}
+  PART {{ part.mountpoint }} {{ part.filesystem }} {{ part.size }}
+{% endfor %}
+
+# Logical volumes
+{% for lv in logical_volumes -%}
+  LV {{ lv.vg }} {{ lv.name }} {{ lv.mountpoint }} {{ lv.filesystem }} {{ lv.size }}
+{% endfor %}
+

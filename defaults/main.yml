@@ -1,5 +1,5 @@
 ---
 
 # Time in seconds before a server should be up after a reboot
-hetzner_reboot_timeout: 420
+hetzner_reboot_timeout: 600
 
