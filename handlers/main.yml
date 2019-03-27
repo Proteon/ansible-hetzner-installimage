@@ -1,0 +1,25 @@
+---
+
+#- name: check server state
+#  local_action:
+    
+
+- name: activate rescue mode
+  local_action:
+    module: uri
+    url: "{{ hetzner_robot_address }}/{{ansible_default_ipv4.address }}/rescue"
+    user: "{{ hetzner_ws_user }}"
+    password: "{{ hetzner_ws_pass }}"
+    method: POST
+    body_format: form-urlencoded
+    body:
+      os: linux
+      arch: 64
+      authorized_key: "{{ ssh_key_fingerprint }}"
+    status_code: 200
+  register: rescue_mode_on
+
+- name: reboot server
+  reboot:
+    reboot_timeout: "{{ hetzner_reboot_timeout }}"
+

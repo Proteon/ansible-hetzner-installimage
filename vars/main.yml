@@ -1,0 +1,10 @@
+---
+
+# Disable SSH key checking, as it changes during every reboot
+# in this role.
+ansible_ssh_extra_args:
+    -o StrictHostKeyChecking=no
+    -o UserKnownHostsFile=/dev/null
+
+hetzner_robot_address: https://robot-ws.your-server.de
+
