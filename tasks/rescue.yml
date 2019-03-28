@@ -8,8 +8,7 @@
   register: rescue_oldroot
 
 - name: activate rescue mode
-  local_action:
-    module: uri
+  uri:
     url: "{{ hetzner_robot_address }}/boot/{{ getent_hosts|list|first }}/rescue"
     method: POST
     body:
@@ -20,11 +19,9 @@
       - 200
       - 409 # rescue mode already activated
   when: not rescue_oldroot.stat.exists
+  delegate_to: localhost
 
 - name: include reboot tasks
   include: reboot.yml
   when: not rescue_oldroot.stat.exists
-
-- name: test ping
-  ping:
 

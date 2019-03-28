@@ -1,14 +1,27 @@
 ---
 
 - name: get host ip address
-  local_action:
-    module: getent
+  getent:
     database: hosts
     key: "{{ inventory_hostname }}"
+  delegate_to: localhost
 
 - name: reboot into rescue mode
   include: rescue.yml
-  when: 
 
-#- name: create installimage config
+- name: clean up before install
+  block:
+    - name: clean up lvm data
+      script: clean-lvm.sh
+    - name: clean up raid arrays
+      script: clean-md.sh
+    - name: wipe signatures from devices
+      command: "wipefs --all --force {{ item }}"
+      loop: "{{ hetzner_devices }}"
+
+- name: run installimage
+  include: installimage.yml
+
+#- name: post-install tasks
+#  include: post-install.yml
 

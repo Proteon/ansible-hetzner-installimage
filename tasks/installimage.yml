@@ -1,0 +1,11 @@
+---
+
+- name: create installimage config
+  template:
+    src: installimage.j2
+    dest: /autosetup
+
+- name: run installimage
+  command: /root/.oldroot/nfs/install/installimage
+  register: hetzner_install_result
+

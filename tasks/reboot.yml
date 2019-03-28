@@ -7,23 +7,24 @@
   ignore_unreachable: True
 
 - meta: clear_host_errors
+  when: not reboot_result['changed']
 
 - name: reset server
-  local_action:
-    module: uri
+  uri:
     url: "{{ hetzner_robot_address }}/reset/{{ getent_hosts|list|first }}"
     method: POST
     body:
       type: hw
     status_code: 200
   when: not reboot_result['changed']
+  delegate_to: localhost
 
-- name: waiting for rescue mode
-  local_action:
-    module: wait_for
+- name: waiting for host to come back up
+  wait_for:
     host: "{{ inventory_hostname }}"
     port: 22
     delay: 30
     sleep: 5
     timeout: "{{ hetzner_reboot_timeout }}"
+  delegate_to: localhost
 

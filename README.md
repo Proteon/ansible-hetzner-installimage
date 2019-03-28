@@ -9,6 +9,11 @@ Features:
 * Disk encryption
 * Automated installation of standard or custom Linux images
 
+Inspired by:
+
+- [tecnativa.hetzner_rescue_installimage](https://galaxy.ansible.com/tecnativa/hetzner_rescue_installimage)
+- [andrelohmann.hetzner_installimage](https://galaxy.ansible.com/andrelohmann/hetzner_installimage)
+
 Requirements
 ------------
 
