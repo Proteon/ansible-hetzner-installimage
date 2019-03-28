@@ -3,6 +3,12 @@ Role Name
 
 You can use this role to install custom Linux images on Hetzner Robot dedicated machines.
 
+Features:
+
+* Advanced partitioning
+* Disk encryption
+* Automated installation of standard or custom Linux images
+
 Requirements
 ------------
 
