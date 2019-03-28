@@ -1,4 +1,4 @@
-Role Name
+Hetzner Installimage
 =========
 
 You can use this role to install custom Linux images on Hetzner Robot dedicated machines.
