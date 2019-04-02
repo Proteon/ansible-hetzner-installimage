@@ -11,7 +11,7 @@
 
 - name: reset server
   uri:
-    url: "{{ hetzner_robot_address }}/reset/{{ getent_hosts|list|first }}"
+    url: "{{ hetzner_robot_address }}/reset/{{ getent_hosts | list | first }}"
     method: POST
     body:
       type: hw

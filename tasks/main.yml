@@ -11,6 +11,10 @@
 
 - name: clean up before install
   block:
+    - name: unmount disks
+      mount:
+        path: /mnt
+        state: unmounted
     - name: clean up lvm data
       script: clean-lvm.sh
     - name: clean up raid arrays
@@ -18,9 +22,6 @@
     - name: wipe signatures from devices
       command: "wipefs --all --force {{ item }}"
       loop: "{{ hetzner_devices }}"
-
-- name: ensure safety checks
-  include: safety.yml
 
 - name: run installimage
   include: installimage.yml

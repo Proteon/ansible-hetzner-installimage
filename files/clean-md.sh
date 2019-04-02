@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Stop and remove arrays
-my_mds=$(find /dev -type b -name 'md*')
+my_mds=( $(find /dev -type b -name 'md*') )
 
 # Cleanly exit if there are no active arrays
 [ -z "$my_mds" ] && exit
