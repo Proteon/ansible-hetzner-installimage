@@ -26,5 +26,6 @@
     delay: 30
     sleep: 5
     timeout: "{{ hetzner_reboot_timeout }}"
+  when: not reboot_result['changed']
   delegate_to: localhost
 
