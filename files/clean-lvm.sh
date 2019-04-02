@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Remove logical volumes and volume groups
-my_vgs=$(vgs --noheadings --options vg_name)
+my_vgs=$(vgs --noheadings --options vg_name --reportformat json | jq ".report[0].vg[].vg_name" | sed 's/"//g')
 
 # Cleanly exit if there are no volume groups
 [ -z "$my_vgs" ] && exit
