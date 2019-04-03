@@ -13,6 +13,7 @@ Inspired by:
 
 - [tecnativa.hetzner_rescue_installimage](https://galaxy.ansible.com/tecnativa/hetzner_rescue_installimage)
 - [andrelohmann.hetzner_installimage](https://galaxy.ansible.com/andrelohmann/hetzner_installimage)
+- [this repo](https://gitlab.com/utopia-planitia/hetzner)
 
 Requirements
 ------------

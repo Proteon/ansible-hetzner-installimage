@@ -26,6 +26,16 @@
 - name: run installimage
   include: installimage.yml
 
-#- name: post-install tasks
-#  include: post-install.yml
+# This currently only works with the defaults
+- name: configure partitions
+  script: partitions.sh
+
+- name: reboot into installed system
+  include: reboot.yml
+
+- name: remove old key from known_hosts
+  known_hosts:
+    name: "{{ inventory_hostname }}"
+    state: absent
+  delegate_to: localhost
 

@@ -36,4 +36,14 @@ hetzner_logical_volumes:
     mountpoint: /
     filesystem: ext4
     size: 32G
+  - vg: main
+    name: var
+    mountpoint: /var
+    filesystem: ext4
+    size: 20G
+  - vg: main
+    name: log
+    mountpoint: /var/log
+    filesystem: ext4
+    size: 20G
 
