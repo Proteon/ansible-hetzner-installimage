@@ -8,4 +8,5 @@
 - name: run installimage
   command: /root/.oldroot/nfs/install/installimage
   register: hetzner_install_result
+  when: not ansible_check_mode
 
