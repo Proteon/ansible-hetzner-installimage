@@ -7,7 +7,7 @@
   delegate_to: localhost
 
 - name: reboot into rescue mode
-  include: rescue.yml
+  include_tasks: rescue.yml
 
 - name: clean up before install
   block:
@@ -24,14 +24,14 @@
       loop: "{{ hetzner_devices }}"
 
 - name: run installimage
-  include: installimage.yml
+  include_tasks: installimage.yml
 
 # This currently only works with the defaults
 - name: configure partitions
   script: partitions.sh
 
 - name: reboot into installed system
-  include: reboot.yml
+  include_tasks: reboot.yml
 
 - name: remove old key from known_hosts
   known_hosts:

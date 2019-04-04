@@ -23,6 +23,6 @@
       delegate_to: localhost
 
     - name: include reboot tasks
-      include: reboot.yml
+      include_tasks: reboot.yml
   when: not rescue_oldroot.stat.exists
 
