@@ -9,6 +9,14 @@
 - name: reboot into rescue mode
   include_tasks: rescue.yml
 
+- name: attempt to gather facts
+  setup:
+  register: setup_status
+
+- fail:
+    msg: "Failed to gather facts for {{ inventory_hostname }}, something must have gone wrong."
+  when: setup_status.unreachable is defined
+
 - name: clean up before install
   block:
     - name: unmount disks
