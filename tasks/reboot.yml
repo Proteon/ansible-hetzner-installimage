@@ -10,22 +10,22 @@
   when: not reboot_result['changed']
 
 - name: reset server
-  uri:
-    url: "{{ hetzner_robot_address }}/reset/{{ getent_hosts | list | first }}"
-    method: POST
-    body:
-      type: hw
-    status_code: 200
-  when: not reboot_result['changed']
-  delegate_to: localhost
+  block:
+  - uri:
+      url: "{{ hetzner_robot_address }}/reset/{{ getent_hosts | list | first }}"
+      method: POST
+      body:
+        type: hw
+      status_code: 200
+    delegate_to: localhost
 
-- name: waiting for host to come back up
-  wait_for:
-    host: "{{ inventory_hostname }}"
-    port: 22
-    delay: 30
-    sleep: 5
-    timeout: "{{ hetzner_reboot_timeout }}"
+  - name: waiting for host to come back up
+    wait_for:
+      host: "{{ inventory_hostname }}"
+      port: 22
+      delay: 30
+      sleep: 5
+      timeout: "{{ hetzner_reboot_timeout }}"
+    delegate_to: localhost
   when: not reboot_result['changed']
-  delegate_to: localhost
 
