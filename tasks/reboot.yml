@@ -6,13 +6,17 @@
   register: reboot_result
   ignore_unreachable: True
 
+- debug:
+    msg: "The previous task is allowed to fail; the next task handles the case where this happens."
+  when: not reboot_result['changed']
+
 - meta: clear_host_errors
   when: not reboot_result['changed']
 
 - block:
   - name: reset server
     uri:
-      url: "{{ hetzner_robot_address }}/reset/{{ getent_hosts | list | first }}"
+      url: "{{ hetzner_robot_address }}/reset/{{ host_ip_address.stdout }}"
       method: POST
       body:
         type: hw

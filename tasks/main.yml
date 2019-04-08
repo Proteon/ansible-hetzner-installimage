@@ -1,10 +1,16 @@
 ---
 
 - name: get host ip address
-  getent:
-    database: hosts
-    key: "{{ inventory_hostname }}"
-  delegate_to: localhost
+  command: "dig +short {{ inventory_hostname }}"
+  register: host_ip_address
+
+- name: verify hostname resolves
+  assert:
+    that:
+      - "host_ip_address.stdout | length > 0"
+    fail_msg: "Could not resolve hostname {{ inventory_hostname }}"
+    success_msg: "{{ inventory_hostname }} resolves to {{ host_ip_address.stdout }}"
+
 
 - name: reboot into rescue mode
   include_tasks: rescue.yml
@@ -13,7 +19,8 @@
   setup:
   register: setup_status
 
-- fail:
+- name: verify facts gathered (because we turned ignore_unreachable off)
+  fail:
     msg: "Failed to gather facts for {{ inventory_hostname }}, something must have gone wrong."
   when: setup_status.unreachable is defined
 
