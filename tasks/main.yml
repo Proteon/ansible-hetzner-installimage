@@ -3,6 +3,7 @@
 - name: get host ip address
   command: "dig +short {{ inventory_hostname }}"
   register: host_ip_address
+  delegate_to: localhost
 
 - name: verify hostname resolves
   assert:
@@ -10,7 +11,7 @@
       - "host_ip_address.stdout | length > 0"
     fail_msg: "Could not resolve hostname {{ inventory_hostname }}"
     success_msg: "{{ inventory_hostname }} resolves to {{ host_ip_address.stdout }}"
-
+  delegate_to: localhost
 
 - name: reboot into rescue mode
   include_tasks: rescue.yml
