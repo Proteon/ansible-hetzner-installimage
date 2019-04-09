@@ -9,6 +9,11 @@
 
 - name: enter rescue mode
   block:
+    - name: attempt to unregister server with Red Hat
+      redhat_subscription:
+        state: absent
+      ignore_errors: True
+
     - name: activate rescue mode
       uri:
         url: "{{ hetzner_robot_address }}/boot/{{ host_ip_address.stdout }}/rescue"
@@ -21,11 +26,6 @@
           - 200
           - 409 # rescue mode already activated
       delegate_to: localhost
-
-    - name: attempt to unregister server with Red Hat
-      redhat_subscription:
-        state: absent
-        ignore_errors: True
 
     - name: include reboot tasks
       include_tasks: reboot.yml
