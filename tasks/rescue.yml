@@ -31,3 +31,7 @@
       include_tasks: reboot.yml
   when: rescue_oldroot.stat is not defined or not rescue_oldroot.stat.exists
 
+- name: sleep for a bit to allow boot tasks to properly finish
+  pause:
+    seconds: 30
+

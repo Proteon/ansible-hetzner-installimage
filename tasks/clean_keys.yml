@@ -1,0 +1,9 @@
+---
+
+- name: remove old key from known_hosts
+  known_hosts:
+    name: "{{ item }}"
+    state: absent
+  delegate_to: localhost
+  loop: "{{ play_hosts }}"
+

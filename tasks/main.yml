@@ -13,6 +13,10 @@
     success_msg: "{{ inventory_hostname }} resolves to {{ host_ip_address.stdout }}"
   delegate_to: localhost
 
+- name: clean ssh keys before starting installation
+  include_tasks: clean_keys.yml
+  run_once: True
+
 - name: reboot into rescue mode
   include_tasks: rescue.yml
 
@@ -49,9 +53,7 @@
 - name: reboot into installed system
   include_tasks: reboot.yml
 
-- name: remove old key from known_hosts
-  known_hosts:
-    name: "{{ inventory_hostname }}"
-    state: absent
-  delegate_to: localhost
+- name: clean ssh keys before finishing up playbook
+  include_tasks: clean_keys.yml
+  run_once: True
 
