@@ -1,6 +1,10 @@
 Hetzner Installimage
 =========
 
+**Archived for various reasons**
+
+If you're interested in the partitioning and disk encryption, send me an email (can be found at the bottom).
+
 You can use this role to install custom Linux images on Hetzner Robot dedicated machines.
 
 Features:
