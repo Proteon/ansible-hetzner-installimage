@@ -1,0 +1,24 @@
+---
+
+# Security checks to prevent undesired reinstalls
+
+- name: retrieve system facts
+  setup:
+
+- name: check for allow install safety pin if hostname matches inventory
+  stat:
+    path: /root/REINSTALL_HOST_OK
+  when: ansible_facts['nodename'] == inventory_hostname
+  register: safety_pin
+
+- name: check hostname matches rescue
+  pause:
+    prompt: "System hostname does not match default rescue hostname, continue?"
+  when: ansible_facts['nodename'] != inventory_hostname and ansible_facts['nodename'] != 'rescue'
+  ignore_errors: True
+
+- name: safety pin not present and hostname matches inventory
+  fail:
+    msg: "System hostname matches inventory, implying the host is already intalled. Not continuing without safety pin."
+  when: ansible_facts['nodename'] == inventory_hostname and not safety_pin.stat.exists
+

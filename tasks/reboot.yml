@@ -1,0 +1,35 @@
+---
+
+- name: reboot server
+  reboot:
+    reboot_timeout: "{{ hetzner_reboot_timeout }}"
+  register: reboot_result
+  ignore_unreachable: True
+
+- debug:
+    msg: "The previous task is allowed to fail; the next task handles the case where this happens."
+  when: not reboot_result['changed']
+
+- meta: clear_host_errors
+  when: not reboot_result['changed']
+
+- block:
+  - name: reset server
+    uri:
+      url: "{{ hetzner_robot_address }}/reset/{{ host_ip_address.stdout }}"
+      method: POST
+      body:
+        type: hw
+      status_code: 200
+    delegate_to: localhost
+
+  - name: waiting for host to come back up
+    wait_for:
+      host: "{{ inventory_hostname }}"
+      port: 22
+      delay: 30
+      sleep: 5
+      timeout: "{{ hetzner_reboot_timeout }}"
+    delegate_to: localhost
+  when: not reboot_result['changed']
+

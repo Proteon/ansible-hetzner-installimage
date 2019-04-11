@@ -1,5 +1,49 @@
 ---
 
 # Time in seconds before a server should be up after a reboot
-hetzner_reboot_timeout: 420
+hetzner_reboot_timeout: 600
+
+# Image to use for installation
+hetzner_installimage: /root/.oldroot/nfs/images/Debian-98-stretch-64-minimal.tar.gz
+
+# Where to reference the hostname from, defaulting to its name in the inventory
+hetzner_hostname: "{{ inventory_hostname }}"
+
+# Devices to use
+hetzner_devices:
+  - /dev/nvme0n1
+  - /dev/nvme1n1
+
+hetzner_swraid: 1
+hetzner_swraid_level: 1
+
+hetzner_partitions:
+  - mountpoint: /boot
+    filesystem: ext2
+    size: 1G
+  - mountpoint: lvm
+    filesystem: main
+    size: 96G
+
+hetzner_logical_volumes:
+  - vg: main
+    name: swap
+    mountpoint: swap
+    filesystem: swap
+    size: 4G
+  - vg: main
+    name: root
+    mountpoint: /
+    filesystem: ext4
+    size: 32G
+  - vg: main
+    name: var
+    mountpoint: /var
+    filesystem: ext4
+    size: 20G
+  - vg: main
+    name: log
+    mountpoint: /var/log
+    filesystem: ext4
+    size: 20G
 

@@ -1,0 +1,27 @@
+IMAGE {{ hetzner_image }}
+BOOTLOADER {{ hetzner_bootloader | default('grub') }}
+HOSTNAME {{ hetzner_hostname }}
+{% if sshkey_url is defined %}
+# SSH keys to put on the installed system
+SSHKEYS_URL {{ sshkey_url }}
+{% endif %}
+
+# Hard disk drives to wipe and use
+{% for device in hetzner_devices -%}
+  DRIVE{{ loop.index }} {{ device }}
+{% endfor %}
+
+# RAID configuration
+SWRAID {{ hetzner_swraid }}
+SWRAIDLEVEL {{ hetzner_swraid_level }}
+
+# Physical partitions
+{% for part in hetzner_partitions -%}
+  PART {{ part.mountpoint }} {{ part.filesystem }} {{ part.size }}
+{% endfor %}
+
+# Logical volumes
+{% for lv in hetzner_logical_volumes -%}
+  LV {{ lv.vg }} {{ lv.name }} {{ lv.mountpoint }} {{ lv.filesystem }} {{ lv.size }}
+{% endfor %}
+

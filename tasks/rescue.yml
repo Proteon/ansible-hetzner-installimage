@@ -1,0 +1,37 @@
+---
+
+# This task activates rescue mode and reboots the server.
+
+- name: check if we are already in rescue mode
+  stat:
+    path: /root/.oldroot/nfs
+  register: rescue_oldroot
+
+- name: enter rescue mode
+  block:
+    - name: attempt to unregister server with Red Hat
+      redhat_subscription:
+        state: absent
+      ignore_errors: True
+
+    - name: activate rescue mode
+      uri:
+        url: "{{ hetzner_robot_address }}/boot/{{ host_ip_address.stdout }}/rescue"
+        method: POST
+        body:
+          os: linux
+          arch: 64
+          authorized_key: "{{ ssh_key_fingerprint }}"
+        status_code:
+          - 200
+          - 409 # rescue mode already activated
+      delegate_to: localhost
+
+    - name: include reboot tasks
+      include_tasks: reboot.yml
+  when: rescue_oldroot.stat is not defined or not rescue_oldroot.stat.exists
+
+- name: sleep for a bit to allow boot tasks to properly finish
+  pause:
+    seconds: 30
+

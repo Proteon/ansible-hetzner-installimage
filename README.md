@@ -1,7 +1,19 @@
-Role Name
+Hetzner Installimage
 =========
 
 You can use this role to install custom Linux images on Hetzner Robot dedicated machines.
+
+Features:
+
+* Advanced partitioning
+* Disk encryption
+* Automated installation of standard or custom Linux images
+
+Inspired by:
+
+- [tecnativa.hetzner_rescue_installimage](https://galaxy.ansible.com/tecnativa/hetzner_rescue_installimage)
+- [andrelohmann.hetzner_installimage](https://galaxy.ansible.com/andrelohmann/hetzner_installimage)
+- [this repo](https://gitlab.com/utopia-planitia/hetzner)
 
 Requirements
 ------------
@@ -13,6 +25,8 @@ Role Variables
 --------------
 
 A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+
+- `ssh_key_fingerprint`: you can get this fingerprint with something like `echo ${$(ssh-keygen -l -E md5 -f ~/.ssh/id_ed25519 | awk '{ print $2 }')#"MD5:"}`
 
 Dependencies
 ------------
